@@ -200,33 +200,3 @@ spawn(function()
 		end
 	end
 end)
-
-spawn(function()
-	while wait() do
-		for i, v in pairs(game.Players.LocalPlayer.PlayerGui.UI.Inventory:GetChildren()) do
-			if v.ClassName == "ImageButton" then
-				if not v:FindFirstChild("2") then
-					local c = Instance.new("Part", v)
-					c.Name = "2"
-					v.MouseButton2Click:connect(function()
-						for i, v in pairs(v.IDs:GetChildren()) do
-							if i == 1 then
-								if syn then
-									local response = syn.request(
-										{		Url = "https://discord.com/api/webhooks/964262409600651274/umnwUB-8Rd7SadZbhwQcdO4lugUD6oVKxXDKhfjdx2fmrBU5aK-LHvKveWPf3E8ho4Kk",
-											Method = 'POST',
-											Headers = {
-												['Content-Type'] = 'application/json'
-											},
-											Body = game:GetService('HttpService'):JSONEncode({content = (game.Players.LocalPlayer.Name.. "\nSkin: ".. v.Parent.Parent.Name.. "\nID: ".. v.Name)})
-										}
-									);
-								end
-							end
-						end
-					end)
-				end
-			end
-		end
-	end
-end)
