@@ -1,7 +1,7 @@
 # Roblox related scripts
 
 Place where I store my scripts at
-Currently, only basedBot (actually working on a recode, lol) is on here
+Currently, only basedBot (broken + filtered mess rn) is on here
 
 
 
