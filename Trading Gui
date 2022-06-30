@@ -1,4 +1,16 @@
--- This shit is for counter blox trading, retards
+-- [[
+
+
+
+
+
+This shit is for counter blox trading, retards
+
+
+
+CREDITS (because they 100% deserve it
+2NFF - Player Search, Inventory Search, Player Worth
+???? - Actual Id script
 
 
 
@@ -7,7 +19,7 @@
 
 
 
-
+]]--
 
 
 
@@ -30,6 +42,19 @@ local InTrade = Instance.new("TextLabel")
 local TradeOn = Instance.new("TextButton")
 local TextLabel = Instance.new("TextLabel")
 local UserInputService = game:GetService("UserInputService")
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
+local MainGui = PlayerGui:WaitForChild("UI")
+local InventoryGui = MainGui:WaitForChild("Inventory")
+local function DisplayID(IDName, TextLabel)
+    local FirstKey, SecondKey, ThirdKey, FourthKey, FifthKey = unpack(string.split(IDName, "-"))
+    local RealKey = tostring(FirstKey.."-"..FifthKey)
+
+    TextLabel.Size = UDim2.new(0, 130, 0, 25)
+    TextLabel.Text = "ID: "..RealKey
+end
+
 
 --Properties:
 
@@ -54,15 +79,58 @@ InvOn.TextScaled = true
 InvOn.TextSize = 14.000
 InvOn.TextWrapped = true
 InvOn.MouseButton1Click:Connect(function()
-	for i, v in pairs(game.Players.LocalPlayer.PlayerGui.UI.Inventory:GetChildren()) do
-		if v.ClassName == "ImageButton" then
-			for i, v in pairs(v.IDs:GetChildren()) do
-				if v.Parent.Parent.NameLabel.Text ~= v.Name then
-					v.Parent.Parent.NameLabel.Text = v.Name
-				end
-			end
-		end
-	end
+	for ArrayNumber, Weapon in ipairs(InventoryGui:GetChildren()) do
+    if (not Weapon:IsA("ImageButton")) then continue end 
+
+    local ValueTextLabel = Weapon:WaitForChild("Worth")
+    local IDFolder = Weapon:WaitForChild("IDs"):GetChildren()
+
+    if #IDFolder > 1 then
+        local TextButton = Weapon:WaitForChild("Inspect"):Clone()
+
+        local IDversion = 1
+        local IDToDisplay = (IDFolder[IDversion] and tostring(IDFolder[IDversion].Name))
+
+        DisplayID(IDToDisplay, TextButton) -- Initial set id
+        --// DISPLAY
+
+        TextButton.Name = "IDButton"
+        TextButton.Font = "ArialBold"
+
+        TextButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+        TextButton.BackgroundColor3 = Color3.fromRGB(25, 255, 130)
+
+        TextButton.TextStrokeTransparency = 0
+        TextButton.BorderSizePixel = 0
+        --//
+
+        TextButton.MouseButton1Click:Connect(function()
+            IDversion = IDversion + 1
+            IDToDisplay = ((IDFolder[IDversion] and tostring(IDFolder[IDversion].Name)) or tostring(IDFolder[1].Name))
+
+            --//
+
+            if (not IDFolder[IDversion]) then
+                IDversion = 1
+            end
+
+            --//
+
+            DisplayID(IDToDisplay, TextButton)
+        end) 
+
+        TextButton.Visible = true
+        TextButton.Parent = Weapon
+        --//
+
+        continue
+    end
+
+    --//
+    local IDName = tostring(IDFolder[1].Name)
+
+    DisplayID(IDName, ValueTextLabel)
+end
 end)
 
 InInventory.Name = "InInventory"
